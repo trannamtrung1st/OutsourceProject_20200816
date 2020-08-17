@@ -110,6 +110,7 @@ namespace OutsourceProject20200816
                 if (_eProcessor.Disposed) throw new Exception("Already disposed");
                 _eProcessor.SaveResult();
                 this.lblEScanToday.Text = _eProcessor.GetResult();
+                lblMaxPriceYesterday.Text = $"Giá max: {_eProcessor.GetCurrentMaxPrice():N5}";
             }
             catch (Exception)
             {

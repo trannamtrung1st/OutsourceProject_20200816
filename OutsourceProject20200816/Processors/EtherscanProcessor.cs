@@ -151,7 +151,7 @@ namespace OutsourceProject20200816.Processors
             File.WriteAllText("ket-qua\\" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt", GetResult());
         }
 
-        private double GetCurrentMaxPrice()
+        public double GetCurrentMaxPrice()
         {
             var args = _getArgs();
             var maxPrice = args.Item1 * (MeanReward / 2) * args.Item2;
