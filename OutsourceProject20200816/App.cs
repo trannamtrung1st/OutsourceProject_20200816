@@ -77,19 +77,21 @@ namespace OutsourceProject20200816
             }
         }
 
-        private void OnEScanCalculated(string res)
+        private void OnEScanCalculated(string res, double maxPrice)
         {
             this.Invoke(new MethodInvoker(() =>
             {
-                this.lblEScanToday.Text = res;
+                lblEScanToday.Text = res;
+                lblMaxPriceToday.Text = $"Giá max: {maxPrice:N5}";
             }));
         }
 
-        private void OnEScanYesterdayCalculated(string res)
+        private void OnEScanYesterdayCalculated(string res, double maxPrice)
         {
             this.Invoke(new MethodInvoker(() =>
             {
                 this.lblEScanYesterday.Text = res;
+                lblMaxPriceYesterday.Text = $"Giá max: {maxPrice:N5}";
             }));
         }
 

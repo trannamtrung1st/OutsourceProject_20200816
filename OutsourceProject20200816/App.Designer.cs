@@ -41,6 +41,8 @@
             this.lblEScanYesterday = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtXX = new System.Windows.Forms.TextBox();
+            this.lblMaxPriceToday = new System.Windows.Forms.Label();
+            this.lblMaxPriceYesterday = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblCalResult
@@ -78,7 +80,7 @@
             // 
             this.lblEScanToday.AutoSize = true;
             this.lblEScanToday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEScanToday.Location = new System.Drawing.Point(12, 91);
+            this.lblEScanToday.Location = new System.Drawing.Point(12, 113);
             this.lblEScanToday.Name = "lblEScanToday";
             this.lblEScanToday.Size = new System.Drawing.Size(70, 17);
             this.lblEScanToday.TabIndex = 4;
@@ -108,7 +110,7 @@
             // 
             this.lblEScanYesterday.AutoSize = true;
             this.lblEScanYesterday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEScanYesterday.Location = new System.Drawing.Point(278, 91);
+            this.lblEScanYesterday.Location = new System.Drawing.Point(278, 113);
             this.lblEScanYesterday.Name = "lblEScanYesterday";
             this.lblEScanYesterday.Size = new System.Drawing.Size(83, 17);
             this.lblEScanYesterday.TabIndex = 8;
@@ -132,11 +134,35 @@
             this.txtXX.Text = "0";
             this.txtXX.TextChanged += new System.EventHandler(this.txtXX_TextChanged);
             // 
+            // lblMaxPriceToday
+            // 
+            this.lblMaxPriceToday.AutoSize = true;
+            this.lblMaxPriceToday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaxPriceToday.ForeColor = System.Drawing.Color.Blue;
+            this.lblMaxPriceToday.Location = new System.Drawing.Point(12, 91);
+            this.lblMaxPriceToday.Name = "lblMaxPriceToday";
+            this.lblMaxPriceToday.Size = new System.Drawing.Size(85, 17);
+            this.lblMaxPriceToday.TabIndex = 11;
+            this.lblMaxPriceToday.Text = "Giá max: 0";
+            // 
+            // lblMaxPriceYesterday
+            // 
+            this.lblMaxPriceYesterday.AutoSize = true;
+            this.lblMaxPriceYesterday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaxPriceYesterday.ForeColor = System.Drawing.Color.Blue;
+            this.lblMaxPriceYesterday.Location = new System.Drawing.Point(278, 91);
+            this.lblMaxPriceYesterday.Name = "lblMaxPriceYesterday";
+            this.lblMaxPriceYesterday.Size = new System.Drawing.Size(85, 17);
+            this.lblMaxPriceYesterday.TabIndex = 12;
+            this.lblMaxPriceYesterday.Text = "Giá max: 0";
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblMaxPriceYesterday);
+            this.Controls.Add(this.lblMaxPriceToday);
             this.Controls.Add(this.txtXX);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblEScanYesterday);
@@ -163,6 +189,8 @@
         private System.Windows.Forms.Label lblEScanYesterday;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtXX;
+        private System.Windows.Forms.Label lblMaxPriceToday;
+        private System.Windows.Forms.Label lblMaxPriceYesterday;
     }
 }
 

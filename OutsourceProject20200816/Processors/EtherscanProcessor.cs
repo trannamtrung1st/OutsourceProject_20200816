@@ -65,7 +65,7 @@ namespace OutsourceProject20200816.Processors
             Driver.Dispose();
         }
 
-        public Task Start(Action<string> onCalculated)
+        public Task Start(Action<string, double> onCalculated)
         {
             return Task.Run(() =>
             {
@@ -118,7 +118,7 @@ namespace OutsourceProject20200816.Processors
                             MeanReward = SumReward / CountBlocks;
                         }
                         CurrentPage++;
-                        onCalculated(GetResult());
+                        onCalculated(GetResult(), GetCurrentMaxPrice());
                     }
                     catch (WebDriverException ex)
                     {
@@ -151,18 +151,24 @@ namespace OutsourceProject20200816.Processors
             File.WriteAllText("ket-qua\\" + DateTime.Now.ToString("dd-MM-yyyy") + ".txt", GetResult());
         }
 
-        public string GetResult()
+        private double GetCurrentMaxPrice()
         {
             var args = _getArgs();
             var maxPrice = args.Item1 * (MeanReward / 2) * args.Item2;
+            return maxPrice;
+        }
+
+        public string GetResult()
+        {
             return
                 $"Đầu: {BlockIds.Max} - Cuối: {BlockIds.Min}\n" +
                 $"Tổng reward: {SumReward:N5}\n" +
                 $"Trung bình reward: {MeanReward:N5}\n" +
                 $"Tổng số block: {CountBlocks:N0}\n" +
-                $"Giá max: {maxPrice:N5}\n" +
                 $"Dữ liệu cho ngày: {ParsingDate:dd/MM/yyyy}\n" +
-                $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+                $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}\n" +
+                $"---------------------------\n" +
+                $"Giá max: {GetCurrentMaxPrice():N5}\n";
         }
     }
 }
