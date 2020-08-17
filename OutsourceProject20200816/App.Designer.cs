@@ -18,8 +18,9 @@
                 components.Dispose();
             }
             //manual disposing
-            wtmProcessor.Dispose();
-            eProcessor.Dispose();
+            _wtmProcessor.Dispose();
+            _eProcessor.Dispose();
+            _eProcessorYesterday.Dispose();
             base.Dispose(disposing);
         }
 
@@ -34,9 +35,10 @@
             this.lblCalResult = new System.Windows.Forms.Label();
             this.btnUpdateWTM = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblEScanRes = new System.Windows.Forms.Label();
-            this.btnEScan = new System.Windows.Forms.Button();
-            this.btnUpdateEScan = new System.Windows.Forms.Button();
+            this.lblEScanToday = new System.Windows.Forms.Label();
+            this.btnUpdateEScanToday = new System.Windows.Forms.Button();
+            this.btnUpdateEScanYesterday = new System.Windows.Forms.Button();
+            this.lblEScanYesterday = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblCalResult
@@ -70,44 +72,55 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Kết quả Etherscan";
             // 
-            // lblEScanRes
+            // lblEScanToday
             // 
-            this.lblEScanRes.AutoSize = true;
-            this.lblEScanRes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEScanRes.Location = new System.Drawing.Point(12, 61);
-            this.lblEScanRes.Name = "lblEScanRes";
-            this.lblEScanRes.Size = new System.Drawing.Size(70, 17);
-            this.lblEScanRes.TabIndex = 4;
-            this.lblEScanRes.Text = "Đang xử lí";
+            this.lblEScanToday.AutoSize = true;
+            this.lblEScanToday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEScanToday.Location = new System.Drawing.Point(12, 91);
+            this.lblEScanToday.Name = "lblEScanToday";
+            this.lblEScanToday.Size = new System.Drawing.Size(70, 17);
+            this.lblEScanToday.TabIndex = 4;
+            this.lblEScanToday.Text = "Đang xử lí";
             // 
-            // btnEScan
+            // btnUpdateEScanToday
             // 
-            this.btnEScan.Location = new System.Drawing.Point(268, 32);
-            this.btnEScan.Name = "btnEScan";
-            this.btnEScan.Size = new System.Drawing.Size(101, 23);
-            this.btnEScan.TabIndex = 5;
-            this.btnEScan.Text = "Chạy lại";
-            this.btnEScan.UseVisualStyleBackColor = true;
-            this.btnEScan.Click += new System.EventHandler(this.btnEScan_Click);
+            this.btnUpdateEScanToday.Location = new System.Drawing.Point(15, 65);
+            this.btnUpdateEScanToday.Name = "btnUpdateEScanToday";
+            this.btnUpdateEScanToday.Size = new System.Drawing.Size(173, 23);
+            this.btnUpdateEScanToday.TabIndex = 6;
+            this.btnUpdateEScanToday.Text = "Cập nhật hôm nay";
+            this.btnUpdateEScanToday.UseVisualStyleBackColor = true;
+            this.btnUpdateEScanToday.Click += new System.EventHandler(this.btnUpdateEScan_Click);
             // 
-            // btnUpdateEScan
+            // btnUpdateEScanYesterday
             // 
-            this.btnUpdateEScan.Location = new System.Drawing.Point(161, 32);
-            this.btnUpdateEScan.Name = "btnUpdateEScan";
-            this.btnUpdateEScan.Size = new System.Drawing.Size(101, 23);
-            this.btnUpdateEScan.TabIndex = 6;
-            this.btnUpdateEScan.Text = "Cập nhật";
-            this.btnUpdateEScan.UseVisualStyleBackColor = true;
-            this.btnUpdateEScan.Click += new System.EventHandler(this.btnUpdateEScan_Click);
+            this.btnUpdateEScanYesterday.Location = new System.Drawing.Point(281, 65);
+            this.btnUpdateEScanYesterday.Name = "btnUpdateEScanYesterday";
+            this.btnUpdateEScanYesterday.Size = new System.Drawing.Size(205, 23);
+            this.btnUpdateEScanYesterday.TabIndex = 7;
+            this.btnUpdateEScanYesterday.Text = "Lấy dữ liệu hôm qua";
+            this.btnUpdateEScanYesterday.UseVisualStyleBackColor = true;
+            this.btnUpdateEScanYesterday.Click += new System.EventHandler(this.btnUpdateEScanYesterday_Click);
+            // 
+            // lblEScanYesterday
+            // 
+            this.lblEScanYesterday.AutoSize = true;
+            this.lblEScanYesterday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEScanYesterday.Location = new System.Drawing.Point(278, 91);
+            this.lblEScanYesterday.Name = "lblEScanYesterday";
+            this.lblEScanYesterday.Size = new System.Drawing.Size(83, 17);
+            this.lblEScanYesterday.TabIndex = 8;
+            this.lblEScanYesterday.Text = "Không chạy";
             // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnUpdateEScan);
-            this.Controls.Add(this.btnEScan);
-            this.Controls.Add(this.lblEScanRes);
+            this.Controls.Add(this.lblEScanYesterday);
+            this.Controls.Add(this.btnUpdateEScanYesterday);
+            this.Controls.Add(this.btnUpdateEScanToday);
+            this.Controls.Add(this.lblEScanToday);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnUpdateWTM);
             this.Controls.Add(this.lblCalResult);
@@ -122,9 +135,10 @@
         private System.Windows.Forms.Label lblCalResult;
         private System.Windows.Forms.Button btnUpdateWTM;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblEScanRes;
-        private System.Windows.Forms.Button btnEScan;
-        private System.Windows.Forms.Button btnUpdateEScan;
+        private System.Windows.Forms.Label lblEScanToday;
+        private System.Windows.Forms.Button btnUpdateEScanToday;
+        private System.Windows.Forms.Button btnUpdateEScanYesterday;
+        private System.Windows.Forms.Label lblEScanYesterday;
     }
 }
 

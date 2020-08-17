@@ -14,19 +14,20 @@ namespace OutsourceProject20200816.Processors
 {
     public class EtherscanProcessor
     {
-        public DateTime CurrentDate = DateTime.Now;
+        public DateTime ParsingDate { get; set; }
         public int CurrentPage { get; set; } = 1;
         public SortedSet<long> BlockIds { get; set; }
         public double SumReward { get; set; } = 0;
         public double MeanReward { get; set; } = 0;
         public long CountBlocks { get; set; } = 0;
         public IWebDriver Driver { get; }
-        private bool disposed = false;
+        public bool Disposed { get; private set; } = false;
         private bool isLastParsed = false;
+        public bool IsToday { get; set; }
 
         private void ResetNewDate()
         {
-            CurrentDate = DateTime.Now;
+            ParsingDate = DateTime.Now;
             CurrentPage = 1;
             SumReward = 0;
             MeanReward = 0;
@@ -40,12 +41,24 @@ namespace OutsourceProject20200816.Processors
             BlockIds = new SortedSet<long>();
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
-            Driver = new ChromeDriver(chromeDriverService, new ChromeOptions());
+            var options = new ChromeOptions();
+            options.AddArguments("--window-size=1920,1080",
+                "--disable-gpu",
+                "--disable-extensions",
+                "--enable-javascript",
+                $"user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36",
+                "--proxy-server='direct://'",
+                "--proxy-bypass-list=*",
+                "--start-maximized",
+                "--headless");
+            Driver = new ChromeDriver(chromeDriverService, options);
+            IsToday = true;
+            ParsingDate = DateTime.Now;
         }
 
         public void Dispose()
         {
-            disposed = true;
+            Disposed = true;
             Driver.Quit();
             Driver.Dispose();
         }
@@ -54,12 +67,13 @@ namespace OutsourceProject20200816.Processors
         {
             return Task.Run(() =>
             {
-                while (!disposed)
+                while (!Disposed)
                 {
                     try
                     {
                         var url = Program.Config.EtherscanUrl + $"?ps=100&p={CurrentPage}";
                         Driver.Navigate().GoToUrl(url);
+                        var source = Driver.PageSource;
                         var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
                         wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
                         var blocks = wait.Until(driver =>
@@ -73,14 +87,15 @@ namespace OutsourceProject20200816.Processors
                             var utcDate = DateTime.ParseExact(dateStr, "yyyy-MM-dd H:m:s",
                                 CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
                             var localDate = utcDate.ToLocalTime();
-                            if (localDate.Date < CurrentDate.Date || localDate.TimeOfDay.Hours < 7)
+                            if (localDate >= ParsingDate.Date.AddDays(1).AddHours(7)) continue;
+                            if (localDate < ParsingDate.Date.AddHours(7))
                             {
                                 isLastParsed = true;
-                                CurrentPage = 0;
                                 SaveResult();
+                                CurrentPage = 0;
                                 break;
                             }
-                            if (CurrentDate.Date < DateTime.Now.Date)
+                            if (IsToday && ParsingDate.Date.AddDays(1).AddHours(7) < DateTime.Now)
                             {
                                 SaveResult();
                                 ResetNewDate();
@@ -91,7 +106,6 @@ namespace OutsourceProject20200816.Processors
                             {
                                 if (!isLastParsed) continue;
                                 CurrentPage = 0;
-                                SaveResult();
                                 break;
                             }
                             BlockIds.Add(id);
@@ -111,9 +125,19 @@ namespace OutsourceProject20200816.Processors
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex);
+                        return;
                     }
                     if (isLastParsed)
-                        Thread.Sleep(10000);
+                        if (IsToday)
+                        {
+                            SaveResult();
+                            Thread.Sleep(10000);
+                        }
+                        else
+                        {
+                            Dispose();
+                            return;
+                        }
                 }
             });
         }
@@ -131,6 +155,7 @@ namespace OutsourceProject20200816.Processors
                 $"Tổng reward: {SumReward:N5}\n" +
                 $"Trung bình reward: {MeanReward:N5}\n" +
                 $"Tổng số block: {CountBlocks:N0}\n" +
+                $"Dữ liệu cho ngày: {ParsingDate:dd/MM/yyyy}\n" +
                 $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
         }
     }
