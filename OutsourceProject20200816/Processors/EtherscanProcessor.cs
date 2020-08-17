@@ -135,6 +135,7 @@ namespace OutsourceProject20200816.Processors
                         }
                         else
                         {
+                            SaveResult();
                             Dispose();
                             return;
                         }
