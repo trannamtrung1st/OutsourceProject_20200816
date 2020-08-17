@@ -82,41 +82,53 @@ namespace OutsourceProject20200816.Processors
                         {
                             return driver.FindElements(By.XPath(Program.Config.BlockXPath));
                         });
-                        foreach (var b in blocks)
+                        var cont = true;
+                        if (!IsToday)
                         {
-                            var id = long.Parse(b.FindElement(By.XPath("td[1]")).Text);
-                            var dateStr = b.FindElement(By.XPath("td[2]")).GetAttribute("textContent");
+                            var lastBlocks = blocks.Last();
+                            var id = long.Parse(lastBlocks.FindElement(By.XPath("td[1]")).Text);
+                            var dateStr = lastBlocks.FindElement(By.XPath("td[2]")).GetAttribute("textContent");
                             var utcDate = DateTime.ParseExact(dateStr, "yyyy-MM-dd H:m:s",
                                 CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
                             var localDate = utcDate.ToLocalTime();
-                            if (localDate >= ParsingDate.Date.AddDays(1).AddHours(7)) continue;
-                            if (localDate < ParsingDate.Date.AddHours(7))
-                            {
-                                isLastParsed = true;
-                                SaveResult();
-                                CurrentPage = 0;
-                                break;
-                            }
-                            if (IsToday && ParsingDate.Date.AddDays(1).AddHours(7) < DateTime.Now)
-                            {
-                                SaveResult();
-                                ResetNewDate();
-                                CurrentPage = 0;
-                                break;
-                            }
-                            if (BlockIds.Contains(id))
-                            {
-                                if (!isLastParsed) continue;
-                                CurrentPage = 0;
-                                break;
-                            }
-                            BlockIds.Add(id);
-                            var rewardText = b.FindElement(By.XPath("td[10]")).Text.Split(' ')[0];
-                            var reward = double.Parse(rewardText);
-                            CountBlocks++;
-                            SumReward += reward;
-                            MeanReward = SumReward / CountBlocks;
+                            if (localDate >= ParsingDate.Date.AddDays(1).AddHours(7)) cont = false;
                         }
+                        if (cont)
+                            foreach (var b in blocks)
+                            {
+                                var id = long.Parse(b.FindElement(By.XPath("td[1]")).Text);
+                                var dateStr = b.FindElement(By.XPath("td[2]")).GetAttribute("textContent");
+                                var utcDate = DateTime.ParseExact(dateStr, "yyyy-MM-dd H:m:s",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                                var localDate = utcDate.ToLocalTime();
+                                if (localDate >= ParsingDate.Date.AddDays(1).AddHours(7)) continue;
+                                if (localDate < ParsingDate.Date.AddHours(7))
+                                {
+                                    isLastParsed = true;
+                                    SaveResult();
+                                    CurrentPage = 0;
+                                    break;
+                                }
+                                if (IsToday && ParsingDate.Date.AddDays(1).AddHours(7) < DateTime.Now)
+                                {
+                                    SaveResult();
+                                    ResetNewDate();
+                                    CurrentPage = 0;
+                                    break;
+                                }
+                                if (BlockIds.Contains(id))
+                                {
+                                    if (!isLastParsed) continue;
+                                    CurrentPage = 0;
+                                    break;
+                                }
+                                BlockIds.Add(id);
+                                var rewardText = b.FindElement(By.XPath("td[10]")).Text.Split(' ')[0];
+                                var reward = double.Parse(rewardText);
+                                CountBlocks++;
+                                SumReward += reward;
+                                MeanReward = SumReward / CountBlocks;
+                            }
                         CurrentPage++;
                         onCalculated(GetResult(), GetCurrentMaxPrice());
                     }
