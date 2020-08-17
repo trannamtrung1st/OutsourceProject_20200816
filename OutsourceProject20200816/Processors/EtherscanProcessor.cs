@@ -24,6 +24,7 @@ namespace OutsourceProject20200816.Processors
         public bool Disposed { get; private set; } = false;
         private bool isLastParsed = false;
         public bool IsToday { get; set; }
+        private Func<ValueTuple<double, double>> _getArgs;
 
         private void ResetNewDate()
         {
@@ -36,8 +37,9 @@ namespace OutsourceProject20200816.Processors
             BlockIds = new SortedSet<long>();
         }
 
-        public EtherscanProcessor()
+        public EtherscanProcessor(Func<ValueTuple<double, double>> getArgs)
         {
+            _getArgs = getArgs;
             BlockIds = new SortedSet<long>();
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
@@ -151,11 +153,14 @@ namespace OutsourceProject20200816.Processors
 
         public string GetResult()
         {
+            var args = _getArgs();
+            var maxPrice = args.Item1 * (MeanReward / 2) * args.Item2;
             return
                 $"Đầu: {BlockIds.Max} - Cuối: {BlockIds.Min}\n" +
                 $"Tổng reward: {SumReward:N5}\n" +
                 $"Trung bình reward: {MeanReward:N5}\n" +
                 $"Tổng số block: {CountBlocks:N0}\n" +
+                $"Giá max: {maxPrice:N5}\n" +
                 $"Dữ liệu cho ngày: {ParsingDate:dd/MM/yyyy}\n" +
                 $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
         }

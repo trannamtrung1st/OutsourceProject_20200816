@@ -16,6 +16,7 @@ namespace OutsourceProject20200816.Processors
     {
         public IWebDriver Driver { get; }
         private bool disposed = false;
+        public double WTM { get; private set; }
 
         public WhatToMineProcessor()
         {
@@ -82,6 +83,7 @@ namespace OutsourceProject20200816.Processors
                 var rev24hText = rev24hEle.Text.Split('\n')[0];
                 var rev24hVal = double.Parse(rev24hText);
                 var result = rev24hVal / brVal * 2000;
+                WTM = result;
                 onCalculated(result.ToString("0.000000"));
             }
             catch (WebDriverTimeoutException)

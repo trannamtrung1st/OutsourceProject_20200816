@@ -20,7 +20,7 @@
             //manual disposing
             _wtmProcessor.Dispose();
             _eProcessor.Dispose();
-            _eProcessorYesterday.Dispose();
+            _eProcessorYesterday?.Dispose();
             base.Dispose(disposing);
         }
 
@@ -39,6 +39,8 @@
             this.btnUpdateEScanToday = new System.Windows.Forms.Button();
             this.btnUpdateEScanYesterday = new System.Windows.Forms.Button();
             this.lblEScanYesterday = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtXX = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblCalResult
@@ -112,11 +114,31 @@
             this.lblEScanYesterday.TabIndex = 8;
             this.lblEScanYesterday.Text = "Không chạy";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(566, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(67, 17);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Hệ số XX";
+            // 
+            // txtXX
+            // 
+            this.txtXX.Location = new System.Drawing.Point(569, 88);
+            this.txtXX.Name = "txtXX";
+            this.txtXX.Size = new System.Drawing.Size(100, 22);
+            this.txtXX.TabIndex = 10;
+            this.txtXX.Text = "0";
+            this.txtXX.TextChanged += new System.EventHandler(this.txtXX_TextChanged);
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtXX);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lblEScanYesterday);
             this.Controls.Add(this.btnUpdateEScanYesterday);
             this.Controls.Add(this.btnUpdateEScanToday);
@@ -139,6 +161,8 @@
         private System.Windows.Forms.Button btnUpdateEScanToday;
         private System.Windows.Forms.Button btnUpdateEScanYesterday;
         private System.Windows.Forms.Label lblEScanYesterday;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtXX;
     }
 }
 

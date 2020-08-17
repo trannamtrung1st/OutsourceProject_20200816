@@ -32,9 +32,15 @@ namespace OutsourceProject20200816
             _wtmProcessor.Loop(this.OnWTMCalculated);
         }
 
+        private ValueTuple<double, double> GetArgs()
+        {
+            var xx = double.Parse(txtXX.Text);
+            return (_wtmProcessor.WTM, xx);
+        }
+
         private void InitEScan()
         {
-            _eProcessor = new EtherscanProcessor()
+            _eProcessor = new EtherscanProcessor(GetArgs)
             {
                 //IsTodayOnly = true,
                 //ParsingDate = DateTime.Now
@@ -46,7 +52,7 @@ namespace OutsourceProject20200816
         {
             if (_eProcessorYesterday != null) _eProcessorYesterday.Dispose();
             this.lblEScanYesterday.Text = "Đang xử lí";
-            _eProcessorYesterday = new EtherscanProcessor()
+            _eProcessorYesterday = new EtherscanProcessor(GetArgs)
             {
                 IsToday = false,
                 ParsingDate = DateTime.Now.Subtract(TimeSpan.FromDays(1)).Date
@@ -112,6 +118,17 @@ namespace OutsourceProject20200816
         private void btnUpdateEScanYesterday_Click(object sender, EventArgs e)
         {
             InitEScanYesterday();
+        }
+
+        private void txtXX_TextChanged(object sender, EventArgs e)
+        {
+            var mPText = txtXX.Text;
+            double mP;
+            if (string.IsNullOrWhiteSpace(mPText) || !double.TryParse(mPText, out mP))
+            {
+                mP = 0;
+                txtXX.Text = mP.ToString();
+            }
         }
     }
 }
