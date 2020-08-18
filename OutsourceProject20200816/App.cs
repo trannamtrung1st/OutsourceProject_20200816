@@ -4,6 +4,7 @@ using OutsourceProject20200816.Processors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace OutsourceProject20200816
         private WhatToMineProcessor _wtmProcessor;
         private EtherscanProcessor _eProcessor;
         private EtherscanProcessor _eProcessorYesterday;
-
+        private int? _perBlocks;
         public App()
         {
             InitializeComponent();
@@ -32,10 +33,10 @@ namespace OutsourceProject20200816
             _wtmProcessor.Loop(this.OnWTMCalculated);
         }
 
-        private ValueTuple<double, double> GetArgs()
+        private ValueTuple<double, double, int?> GetArgs()
         {
             var xx = double.Parse(txtXX.Text);
-            return (_wtmProcessor.WTM, xx);
+            return (_wtmProcessor.WTM, xx, _perBlocks);
         }
 
         private void InitEScan()
@@ -71,22 +72,24 @@ namespace OutsourceProject20200816
                     _wtmProcessor.Start(this.OnWTMCalculated);
                 });
             }
-            catch (WebDriverException ex)
+            catch (WebDriverException)
             {
                 InitWTM();
             }
         }
 
-        private void OnEScanCalculated(string res, double maxPrice)
+        private void OnEScanCalculated(string res, double maxPrice, (string, double) resPerBlocks)
         {
             this.Invoke(new MethodInvoker(() =>
             {
                 lblEScanToday.Text = res;
                 lblMaxPriceToday.Text = $"Giá max: {maxPrice:N5}";
+                lblEScanPerBlocks.Text = resPerBlocks.Item1;
+                lblMaxPricePerBlocks.Text = $"Giá max (150): {resPerBlocks.Item2:N5}";
             }));
         }
 
-        private void OnEScanYesterdayCalculated(string res, double maxPrice)
+        private void OnEScanYesterdayCalculated(string res, double maxPrice, (string, double) resPerBlocks)
         {
             this.Invoke(new MethodInvoker(() =>
             {
@@ -110,7 +113,8 @@ namespace OutsourceProject20200816
                 if (_eProcessor.Disposed) throw new Exception("Already disposed");
                 _eProcessor.SaveResult();
                 this.lblEScanToday.Text = _eProcessor.GetResult();
-                lblMaxPriceYesterday.Text = $"Giá max: {_eProcessor.GetCurrentMaxPrice():N5}";
+                lblMaxPriceToday.Text = $"Giá max: " +
+                    $"{_eProcessor.GetCurrentMaxPrice(_eProcessor.MeanReward):N5}";
             }
             catch (Exception)
             {
@@ -132,6 +136,15 @@ namespace OutsourceProject20200816
                 mP = 0;
                 txtXX.Text = mP.ToString();
             }
+        }
+
+        private void cbbPerBlocks_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var text = cbbPerBlocks.SelectedItem?.ToString();
+            int perBlocks;
+            if (int.TryParse(text, out perBlocks))
+                _perBlocks = perBlocks;
+            else _perBlocks = null;
         }
     }
 }

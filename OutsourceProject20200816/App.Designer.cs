@@ -43,6 +43,10 @@
             this.txtXX = new System.Windows.Forms.TextBox();
             this.lblMaxPriceToday = new System.Windows.Forms.Label();
             this.lblMaxPriceYesterday = new System.Windows.Forms.Label();
+            this.lblMaxPricePerBlocks = new System.Windows.Forms.Label();
+            this.lblEScanPerBlocks = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cbbPerBlocks = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblCalResult
@@ -98,7 +102,7 @@
             // 
             // btnUpdateEScanYesterday
             // 
-            this.btnUpdateEScanYesterday.Location = new System.Drawing.Point(281, 65);
+            this.btnUpdateEScanYesterday.Location = new System.Drawing.Point(569, 65);
             this.btnUpdateEScanYesterday.Name = "btnUpdateEScanYesterday";
             this.btnUpdateEScanYesterday.Size = new System.Drawing.Size(205, 23);
             this.btnUpdateEScanYesterday.TabIndex = 7;
@@ -110,7 +114,7 @@
             // 
             this.lblEScanYesterday.AutoSize = true;
             this.lblEScanYesterday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEScanYesterday.Location = new System.Drawing.Point(278, 113);
+            this.lblEScanYesterday.Location = new System.Drawing.Point(566, 113);
             this.lblEScanYesterday.Name = "lblEScanYesterday";
             this.lblEScanYesterday.Size = new System.Drawing.Size(83, 17);
             this.lblEScanYesterday.TabIndex = 8;
@@ -119,7 +123,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(566, 68);
+            this.label2.Location = new System.Drawing.Point(909, 68);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 17);
             this.label2.TabIndex = 9;
@@ -127,7 +131,7 @@
             // 
             // txtXX
             // 
-            this.txtXX.Location = new System.Drawing.Point(569, 88);
+            this.txtXX.Location = new System.Drawing.Point(912, 88);
             this.txtXX.Name = "txtXX";
             this.txtXX.Size = new System.Drawing.Size(100, 22);
             this.txtXX.TabIndex = 10;
@@ -150,17 +154,68 @@
             this.lblMaxPriceYesterday.AutoSize = true;
             this.lblMaxPriceYesterday.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMaxPriceYesterday.ForeColor = System.Drawing.Color.Blue;
-            this.lblMaxPriceYesterday.Location = new System.Drawing.Point(278, 91);
+            this.lblMaxPriceYesterday.Location = new System.Drawing.Point(566, 91);
             this.lblMaxPriceYesterday.Name = "lblMaxPriceYesterday";
             this.lblMaxPriceYesterday.Size = new System.Drawing.Size(85, 17);
             this.lblMaxPriceYesterday.TabIndex = 12;
             this.lblMaxPriceYesterday.Text = "Giá max: 0";
             // 
+            // lblMaxPricePerBlocks
+            // 
+            this.lblMaxPricePerBlocks.AutoSize = true;
+            this.lblMaxPricePerBlocks.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaxPricePerBlocks.ForeColor = System.Drawing.Color.Blue;
+            this.lblMaxPricePerBlocks.Location = new System.Drawing.Point(276, 93);
+            this.lblMaxPricePerBlocks.Name = "lblMaxPricePerBlocks";
+            this.lblMaxPricePerBlocks.Size = new System.Drawing.Size(129, 17);
+            this.lblMaxPricePerBlocks.TabIndex = 14;
+            this.lblMaxPricePerBlocks.Text = "Giá max (150): 0";
+            // 
+            // lblEScanPerBlocks
+            // 
+            this.lblEScanPerBlocks.AutoSize = true;
+            this.lblEScanPerBlocks.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEScanPerBlocks.Location = new System.Drawing.Point(276, 115);
+            this.lblEScanPerBlocks.Name = "lblEScanPerBlocks";
+            this.lblEScanPerBlocks.Size = new System.Drawing.Size(83, 17);
+            this.lblEScanPerBlocks.TabIndex = 13;
+            this.lblEScanPerBlocks.Text = "Không chạy";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(276, 68);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(81, 17);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Ethermine";
+            // 
+            // cbbPerBlocks
+            // 
+            this.cbbPerBlocks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbPerBlocks.FormattingEnabled = true;
+            this.cbbPerBlocks.Items.AddRange(new object[] {
+            "10",
+            "20",
+            "50",
+            "100",
+            "200"});
+            this.cbbPerBlocks.Location = new System.Drawing.Point(375, 65);
+            this.cbbPerBlocks.Name = "cbbPerBlocks";
+            this.cbbPerBlocks.Size = new System.Drawing.Size(109, 24);
+            this.cbbPerBlocks.TabIndex = 16;
+            this.cbbPerBlocks.SelectedValueChanged += new System.EventHandler(this.cbbPerBlocks_SelectedValueChanged);
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1055, 450);
+            this.Controls.Add(this.cbbPerBlocks);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblMaxPricePerBlocks);
+            this.Controls.Add(this.lblEScanPerBlocks);
             this.Controls.Add(this.lblMaxPriceYesterday);
             this.Controls.Add(this.lblMaxPriceToday);
             this.Controls.Add(this.txtXX);
@@ -191,6 +246,10 @@
         private System.Windows.Forms.TextBox txtXX;
         private System.Windows.Forms.Label lblMaxPriceToday;
         private System.Windows.Forms.Label lblMaxPriceYesterday;
+        private System.Windows.Forms.Label lblMaxPricePerBlocks;
+        private System.Windows.Forms.Label lblEScanPerBlocks;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cbbPerBlocks;
     }
 }
 
