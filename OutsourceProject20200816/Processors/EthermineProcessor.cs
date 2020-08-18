@@ -130,8 +130,9 @@ namespace OutsourceProject20200816.Processors
                     isLastParsed = true;
                     if (count > 200)
                     {
+                        var sub = Blocks.Take(200);
                         Blocks = new SortedList<long, double>(new DescendingComparer());
-                        foreach (var o in Blocks.Take(200))
+                        foreach (var o in sub)
                             Blocks.Add(o.Key, o.Value);
                     }
                 }
