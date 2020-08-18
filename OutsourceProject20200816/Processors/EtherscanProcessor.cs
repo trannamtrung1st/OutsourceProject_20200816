@@ -16,7 +16,7 @@ namespace OutsourceProject20200816.Processors
     {
         public DateTime ParsingDate { get; set; }
         public int CurrentPage { get; set; } = 1;
-        public SortedList<long, double> Blocks { get; set; }
+        public SortedSet<long> BlockIds { get; set; }
         public double SumReward { get; set; } = 0;
         public double MeanReward { get; set; } = 0;
         public long CountBlocks { get; set; } = 0;
@@ -34,13 +34,13 @@ namespace OutsourceProject20200816.Processors
             MeanReward = 0;
             CountBlocks = 0;
             isLastParsed = false;
-            Blocks = new SortedList<long, double>();
+            BlockIds = new SortedSet<long>();
         }
 
         public EtherscanProcessor(Func<ValueTuple<double, double, int?>> getArgs)
         {
             _getArgs = getArgs;
-            Blocks = new SortedList<long, double>();
+            BlockIds = new SortedSet<long>();
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
             chromeDriverService.HideCommandPromptWindow = true;
             var options = new ChromeOptions();
@@ -65,7 +65,7 @@ namespace OutsourceProject20200816.Processors
             Driver.Dispose();
         }
 
-        public Task Start(Action<string, double, (string, double)> onCalculated)
+        public Task Start(Action<string, double> onCalculated)
         {
             return Task.Run(() =>
             {
@@ -116,21 +116,21 @@ namespace OutsourceProject20200816.Processors
                                     CurrentPage = 0;
                                     break;
                                 }
-                                if (Blocks.ContainsKey(id))
+                                if (BlockIds.Contains(id))
                                 {
                                     if (!isLastParsed) continue;
                                     CurrentPage = 0;
                                     break;
                                 }
+                                BlockIds.Add(id);
                                 var rewardText = b.FindElement(By.XPath("td[10]")).Text.Split(' ')[0];
                                 var reward = double.Parse(rewardText);
-                                Blocks.Add(id, reward);
                                 CountBlocks++;
                                 SumReward += reward;
                                 MeanReward = SumReward / CountBlocks;
                             }
                         CurrentPage++;
-                       onCalculated(GetResult(), GetCurrentMaxPrice(MeanReward), GetResultPerBlocks());
+                        onCalculated(GetResult(), GetCurrentMaxPrice(MeanReward));
                     }
                     catch (WebDriverException ex)
                     {
@@ -173,7 +173,7 @@ namespace OutsourceProject20200816.Processors
         public string GetResult()
         {
             return
-                $"Đầu: {Blocks.First().Key} - Cuối: {Blocks.Last().Key}\n" +
+                $"Đầu: {BlockIds.Last()} - Cuối: {BlockIds.First()}\n" +
                 $"Tổng reward: {SumReward:N5}\n" +
                 $"Trung bình reward: {MeanReward:N5}\n" +
                 $"Tổng số block: {CountBlocks:N0}\n" +
@@ -183,32 +183,6 @@ namespace OutsourceProject20200816.Processors
                 $"Giá max: {GetCurrentMaxPrice(MeanReward):N5}\n";
         }
 
-        public (string, double) GetResultPerBlocks()
-        {
-            var maxPriceSub = Blocks.Take(150);
-            var mean150 = maxPriceSub.Average(o => o.Value);
-            var maxPrice150 = GetCurrentMaxPrice(mean150);
-
-            var args = _getArgs();
-            var blocks = args.Item3;
-            var resStr = "Không chạy";
-            if (blocks != null && IsToday)
-            {
-                var subset = Blocks.Take(blocks.Value);
-                var sum = subset.Sum(o => o.Value);
-                var mean = subset.Average(o => o.Value);
-                resStr =
-                    $"Đầu: {subset.First().Key} - Cuối: {subset.Last().Key}\n" +
-                    $"Tổng reward: {sum:N5}\n" +
-                    $"Trung bình reward: {mean:N5}\n" +
-                    $"Số block gần nhất: {blocks:N0}\n" +
-                    $"Dữ liệu cho ngày: {ParsingDate:dd/MM/yyyy}\n" +
-                    $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}\n" +
-                    $"---------------------------\n" +
-                    $"Giá max (150): {maxPrice150:N5}\n";
-            }
-            return (resStr, maxPrice150);
-        }
     }
 
 }

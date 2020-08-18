@@ -19,12 +19,14 @@ namespace OutsourceProject20200816
         private WhatToMineProcessor _wtmProcessor;
         private EtherscanProcessor _eProcessor;
         private EtherscanProcessor _eProcessorYesterday;
+        private EthermineProcessor _etherProcessor;
         private int? _perBlocks;
         public App()
         {
             InitializeComponent();
             InitWTM();
             InitEScan();
+            InitEther();
         }
 
         private void InitWTM()
@@ -37,6 +39,12 @@ namespace OutsourceProject20200816
         {
             var xx = double.Parse(txtXX.Text);
             return (_wtmProcessor.WTM, xx, _perBlocks);
+        }
+
+        private void InitEther()
+        {
+            _etherProcessor = new EthermineProcessor(GetArgs);
+            _etherProcessor.Start(this.OnEtherCalculated);
         }
 
         private void InitEScan()
@@ -78,18 +86,25 @@ namespace OutsourceProject20200816
             }
         }
 
-        private void OnEScanCalculated(string res, double maxPrice, (string, double) resPerBlocks)
+        private void OnEtherCalculated((string, double) resPerBlocks)
         {
             this.Invoke(new MethodInvoker(() =>
             {
-                lblEScanToday.Text = res;
-                lblMaxPriceToday.Text = $"Giá max: {maxPrice:N5}";
                 lblEScanPerBlocks.Text = resPerBlocks.Item1;
                 lblMaxPricePerBlocks.Text = $"Giá max (150): {resPerBlocks.Item2:N5}";
             }));
         }
 
-        private void OnEScanYesterdayCalculated(string res, double maxPrice, (string, double) resPerBlocks)
+        private void OnEScanCalculated(string res, double maxPrice)
+        {
+            this.Invoke(new MethodInvoker(() =>
+            {
+                lblEScanToday.Text = res;
+                lblMaxPriceToday.Text = $"Giá max: {maxPrice:N5}";
+            }));
+        }
+
+        private void OnEScanYesterdayCalculated(string res, double maxPrice)
         {
             this.Invoke(new MethodInvoker(() =>
             {

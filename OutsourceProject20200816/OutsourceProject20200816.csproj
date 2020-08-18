@@ -67,6 +67,7 @@
       <DependentUpon>App.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Config.cs" />
+    <Compile Include="Processors\EthermineProcessor.cs" />
     <Compile Include="Processors\EtherscanProcessor.cs" />
     <Compile Include="Processors\WhatToMineProcessor.cs" />
     <Compile Include="Program.cs" />
