@@ -142,7 +142,7 @@ namespace OutsourceProject20200816.Processors
                     $"Đầu: {subset.First().Key} - Cuối: {subset.Last().Key}\n" +
                     $"Tổng reward: {sum:N5}\n" +
                     $"Trung bình reward: {mean:N5}\n" +
-                    $"Số block gần nhất: {blocks:N0}\n" +
+                    $"Số block gần nhất: {subset.Count():N0}\n" +
                     $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}\n" +
                     $"---------------------------\n" +
                     $"Giá max (150): {maxPrice150:N5}\n";
