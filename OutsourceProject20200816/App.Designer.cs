@@ -48,6 +48,7 @@
             this.lblEScanPerBlocks = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cbbPerBlocks = new System.Windows.Forms.ComboBox();
+            this.btnResetEthermine = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblCalResult
@@ -166,7 +167,7 @@
             this.lblMaxPricePerBlocks.AutoSize = true;
             this.lblMaxPricePerBlocks.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMaxPricePerBlocks.ForeColor = System.Drawing.Color.Blue;
-            this.lblMaxPricePerBlocks.Location = new System.Drawing.Point(276, 93);
+            this.lblMaxPricePerBlocks.Location = new System.Drawing.Point(276, 122);
             this.lblMaxPricePerBlocks.Name = "lblMaxPricePerBlocks";
             this.lblMaxPricePerBlocks.Size = new System.Drawing.Size(85, 17);
             this.lblMaxPricePerBlocks.TabIndex = 14;
@@ -176,7 +177,7 @@
             // 
             this.lblEScanPerBlocks.AutoSize = true;
             this.lblEScanPerBlocks.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEScanPerBlocks.Location = new System.Drawing.Point(276, 115);
+            this.lblEScanPerBlocks.Location = new System.Drawing.Point(276, 144);
             this.lblEScanPerBlocks.Name = "lblEScanPerBlocks";
             this.lblEScanPerBlocks.Size = new System.Drawing.Size(83, 17);
             this.lblEScanPerBlocks.TabIndex = 13;
@@ -203,17 +204,28 @@
             "100",
             "150",
             "200"});
-            this.cbbPerBlocks.Location = new System.Drawing.Point(375, 65);
+            this.cbbPerBlocks.Location = new System.Drawing.Point(279, 95);
             this.cbbPerBlocks.Name = "cbbPerBlocks";
             this.cbbPerBlocks.Size = new System.Drawing.Size(109, 24);
             this.cbbPerBlocks.TabIndex = 16;
             this.cbbPerBlocks.SelectedValueChanged += new System.EventHandler(this.cbbPerBlocks_SelectedValueChanged);
+            // 
+            // btnResetEthermine
+            // 
+            this.btnResetEthermine.Location = new System.Drawing.Point(363, 65);
+            this.btnResetEthermine.Name = "btnResetEthermine";
+            this.btnResetEthermine.Size = new System.Drawing.Size(113, 23);
+            this.btnResetEthermine.TabIndex = 17;
+            this.btnResetEthermine.Text = "Reset";
+            this.btnResetEthermine.UseVisualStyleBackColor = true;
+            this.btnResetEthermine.Click += new System.EventHandler(this.btnResetEthermine_Click);
             // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1055, 450);
+            this.Controls.Add(this.btnResetEthermine);
             this.Controls.Add(this.cbbPerBlocks);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblMaxPricePerBlocks);
@@ -252,6 +264,7 @@
         private System.Windows.Forms.Label lblEScanPerBlocks;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cbbPerBlocks;
+        private System.Windows.Forms.Button btnResetEthermine;
     }
 }
 

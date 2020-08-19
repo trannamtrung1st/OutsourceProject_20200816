@@ -161,5 +161,18 @@ namespace OutsourceProject20200816
                 _perBlocks = perBlocks;
             else _perBlocks = null;
         }
+
+        private void btnResetEthermine_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.lblEScanPerBlocks.Text = "Đang xử lí";
+                _etherProcessor.Dispose();
+            }
+            catch (Exception)
+            {
+                InitEther();
+            }
+        }
     }
 }
