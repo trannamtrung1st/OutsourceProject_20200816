@@ -171,8 +171,8 @@ namespace OutsourceProject20200816
             }
             catch (Exception)
             {
-                InitEther();
             }
+            InitEther();
         }
     }
 }
