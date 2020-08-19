@@ -20,6 +20,7 @@
             //manual disposing
             _wtmProcessor.Dispose();
             _eProcessor.Dispose();
+            _etherProcessor.Dispose();
             _eProcessorYesterday?.Dispose();
             base.Dispose(disposing);
         }
@@ -167,9 +168,9 @@
             this.lblMaxPricePerBlocks.ForeColor = System.Drawing.Color.Blue;
             this.lblMaxPricePerBlocks.Location = new System.Drawing.Point(276, 93);
             this.lblMaxPricePerBlocks.Name = "lblMaxPricePerBlocks";
-            this.lblMaxPricePerBlocks.Size = new System.Drawing.Size(129, 17);
+            this.lblMaxPricePerBlocks.Size = new System.Drawing.Size(85, 17);
             this.lblMaxPricePerBlocks.TabIndex = 14;
-            this.lblMaxPricePerBlocks.Text = "Giá max (150): 0";
+            this.lblMaxPricePerBlocks.Text = "Giá max: 0";
             // 
             // lblEScanPerBlocks
             // 
@@ -200,6 +201,7 @@
             "20",
             "50",
             "100",
+            "150",
             "200"});
             this.cbbPerBlocks.Location = new System.Drawing.Point(375, 65);
             this.cbbPerBlocks.Name = "cbbPerBlocks";

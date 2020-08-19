@@ -80,7 +80,8 @@ namespace OutsourceProject20200816.Processors
                         wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
                         var blocks = wait.Until(driver =>
                         {
-                            return driver.FindElements(By.XPath(Program.Config.BlockXPath));
+                            var bls = driver.FindElements(By.XPath(Program.Config.BlockXPath));
+                            return bls.Count > 0 ? bls : null;
                         });
                         var cont = true;
                         if (!IsToday)
@@ -131,28 +132,28 @@ namespace OutsourceProject20200816.Processors
                             }
                         CurrentPage++;
                         onCalculated(GetResult(), GetCurrentMaxPrice(MeanReward));
+                        if (isLastParsed)
+                            if (IsToday)
+                            {
+                                SaveResult();
+                                Thread.Sleep(10000);
+                            }
+                            else
+                            {
+                                SaveResult();
+                                Dispose();
+                                return;
+                            }
                     }
-                    catch (WebDriverException ex)
+                    catch (WebDriverException)
                     {
                         return;
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex);
-                        return;
+                        Thread.Sleep(10000);
                     }
-                    if (isLastParsed)
-                        if (IsToday)
-                        {
-                            SaveResult();
-                            Thread.Sleep(10000);
-                        }
-                        else
-                        {
-                            SaveResult();
-                            Dispose();
-                            return;
-                        }
                 }
             });
         }
@@ -173,7 +174,7 @@ namespace OutsourceProject20200816.Processors
         public string GetResult()
         {
             return
-                $"Đầu: {BlockIds.Last()} - Cuối: {BlockIds.First()}\n" +
+                $"Đầu: {BlockIds.LastOrDefault()} - Cuối: {BlockIds.FirstOrDefault()}\n" +
                 $"Tổng reward: {SumReward:N5}\n" +
                 $"Trung bình reward: {MeanReward:N5}\n" +
                 $"Tổng số block: {CountBlocks:N0}\n" +

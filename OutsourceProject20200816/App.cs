@@ -91,7 +91,7 @@ namespace OutsourceProject20200816
             this.Invoke(new MethodInvoker(() =>
             {
                 lblEScanPerBlocks.Text = resPerBlocks.Item1;
-                lblMaxPricePerBlocks.Text = $"Giá max (150): {resPerBlocks.Item2:N5}";
+                lblMaxPricePerBlocks.Text = $"Giá max: {resPerBlocks.Item2:N5}";
             }));
         }
 

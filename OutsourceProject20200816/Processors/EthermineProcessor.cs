@@ -69,7 +69,8 @@ namespace OutsourceProject20200816.Processors
                         wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
                         var blocks = wait.Until(driver =>
                         {
-                            return driver.FindElements(By.XPath(Program.Config.BlockXPath));
+                            var bls = driver.FindElements(By.XPath(Program.Config.BlockXPath));
+                            return bls.Count > 0 ? bls : null;
                         });
                         foreach (var b in blocks)
                         {
@@ -86,18 +87,18 @@ namespace OutsourceProject20200816.Processors
                         }
                         CurrentPage++;
                         onCalculated(GetResultPerBlocks());
+                        if (isLastParsed)
+                            Thread.Sleep(10000);
                     }
-                    catch (WebDriverException ex)
+                    catch (WebDriverException)
                     {
                         return;
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex);
-                        return;
-                    }
-                    if (isLastParsed)
                         Thread.Sleep(10000);
+                    }
                 }
             });
         }
@@ -111,17 +112,10 @@ namespace OutsourceProject20200816.Processors
 
         public (string, double) GetResultPerBlocks()
         {
-            var maxPriceSub = Blocks.Take(150).ToList();
-            var maxPrice150 = 0.0;
-            if (maxPriceSub.Count == 150)
-            {
-                var mean150 = maxPriceSub.Average(o => o.Value);
-                maxPrice150 = GetCurrentMaxPrice(mean150);
-            }
-
             var args = _getArgs();
             var blocks = args.Item3;
             var resStr = "Không chạy";
+            var maxPrice = 0.0;
             if (blocks != null)
             {
                 var count = Blocks.Count;
@@ -139,16 +133,17 @@ namespace OutsourceProject20200816.Processors
                 var subset = Blocks.Take(blocks.Value);
                 var sum = subset.Sum(o => o.Value);
                 var mean = subset.Average(o => o.Value);
+                maxPrice = GetCurrentMaxPrice(mean);
                 resStr =
-                    $"Đầu: {subset.First().Key} - Cuối: {subset.Last().Key}\n" +
+                    $"Đầu: {subset.FirstOrDefault().Key} - Cuối: {subset.LastOrDefault().Key}\n" +
                     $"Tổng reward: {sum:N5}\n" +
                     $"Trung bình reward: {mean:N5}\n" +
                     $"Số block gần nhất: {subset.Count():N0}\n" +
                     $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}\n" +
                     $"---------------------------\n" +
-                    $"Giá max (150): {maxPrice150:N5}\n";
+                    $"Giá max: {maxPrice:N5}\n";
             }
-            return (resStr, maxPrice150);
+            return (resStr, maxPrice);
         }
     }
 
