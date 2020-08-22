@@ -90,9 +90,11 @@ namespace OutsourceProject20200816.Processors
                         if (isLastParsed)
                             Thread.Sleep(10000);
                     }
-                    catch (WebDriverException)
+                    catch (WebDriverException ex)
                     {
-                        return;
+                        if (!ex.Message.Contains("Timed out"))
+                            return;
+                        Thread.Sleep(10000);
                     }
                     catch (Exception ex)
                     {
@@ -122,6 +124,7 @@ namespace OutsourceProject20200816.Processors
                 if (count >= 200)
                 {
                     isLastParsed = true;
+                    CurrentPage = 1;
                     if (count > 200)
                     {
                         var sub = Blocks.Take(200);

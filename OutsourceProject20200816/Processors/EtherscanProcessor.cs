@@ -145,9 +145,11 @@ namespace OutsourceProject20200816.Processors
                                 return;
                             }
                     }
-                    catch (WebDriverException)
+                    catch (WebDriverException ex)
                     {
-                        return;
+                        if (!ex.Message.Contains("Timed out"))
+                            return;
+                        Thread.Sleep(10000);
                     }
                     catch (Exception ex)
                     {
