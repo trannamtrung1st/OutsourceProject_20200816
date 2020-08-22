@@ -28,7 +28,7 @@ namespace OutsourceProject20200816.Processors
 
         private void ResetNewDate()
         {
-            ParsingDate = DateTime.Now;
+            ParsingDate = DateTime.Now.Subtract(TimeSpan.FromHours(7));
             CurrentPage = 1;
             SumReward = 0;
             MeanReward = 0;
@@ -55,7 +55,7 @@ namespace OutsourceProject20200816.Processors
                 "--headless");
             Driver = new ChromeDriver(chromeDriverService, options);
             IsToday = true;
-            ParsingDate = DateTime.Now;
+            ParsingDate = DateTime.Now.Subtract(TimeSpan.FromHours(7));
         }
 
         public void Dispose()
