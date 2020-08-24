@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace OutsourceProject20200816
 
         private ValueTuple<double, double, int?> GetArgs()
         {
-            var xx = double.Parse(txtXX.Text);
+            var xx = double.Parse(txtXX.Text, Program.GlobalCulture);
             return (_wtmProcessor.WTM, xx, _perBlocks);
         }
 
@@ -91,7 +92,7 @@ namespace OutsourceProject20200816
             this.Invoke(new MethodInvoker(() =>
             {
                 lblEScanPerBlocks.Text = resPerBlocks.Item1;
-                lblMaxPricePerBlocks.Text = $"Giá max: {resPerBlocks.Item2:N5}";
+                lblMaxPricePerBlocks.Text = $"Giá max: {resPerBlocks.Item2.ToString("N5", Program.GlobalCulture)}";
             }));
         }
 
@@ -100,7 +101,7 @@ namespace OutsourceProject20200816
             this.Invoke(new MethodInvoker(() =>
             {
                 lblEScanToday.Text = res;
-                lblMaxPriceToday.Text = $"Giá max: {maxPrice:N5}";
+                lblMaxPriceToday.Text = $"Giá max: {maxPrice.ToString("N5", Program.GlobalCulture)}";
             }));
         }
 
@@ -109,7 +110,7 @@ namespace OutsourceProject20200816
             this.Invoke(new MethodInvoker(() =>
             {
                 this.lblEScanYesterday.Text = res;
-                lblMaxPriceYesterday.Text = $"Giá max: {maxPrice:N5}";
+                lblMaxPriceYesterday.Text = $"Giá max: {maxPrice.ToString("N5", Program.GlobalCulture)}";
             }));
         }
 
@@ -129,7 +130,7 @@ namespace OutsourceProject20200816
                 _eProcessor.SaveResult();
                 this.lblEScanToday.Text = _eProcessor.GetResult();
                 lblMaxPriceToday.Text = $"Giá max: " +
-                    $"{_eProcessor.GetCurrentMaxPrice(_eProcessor.MeanReward):N5}";
+                    $"{_eProcessor.GetCurrentMaxPrice(_eProcessor.MeanReward).ToString("N5", Program.GlobalCulture)}";
             }
             catch (Exception)
             {
@@ -146,7 +147,8 @@ namespace OutsourceProject20200816
         {
             var mPText = txtXX.Text;
             double mP;
-            if (string.IsNullOrWhiteSpace(mPText) || !double.TryParse(mPText, out mP))
+            if (string.IsNullOrWhiteSpace(mPText) || !double.TryParse(mPText, NumberStyles.Any,
+                Program.GlobalCulture, out mP))
             {
                 mP = 0;
                 txtXX.Text = mP.ToString();
@@ -157,7 +159,7 @@ namespace OutsourceProject20200816
         {
             var text = cbbPerBlocks.SelectedItem?.ToString();
             int perBlocks;
-            if (int.TryParse(text, out perBlocks))
+            if (int.TryParse(text, NumberStyles.Any, Program.GlobalCulture, out perBlocks))
                 _perBlocks = perBlocks;
             else _perBlocks = null;
         }

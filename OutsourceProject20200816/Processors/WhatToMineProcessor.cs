@@ -80,13 +80,13 @@ namespace OutsourceProject20200816.Processors
                     return driver.FindElement(By.XPath(Program.Config.BrXPath));
                 });
                 var brText = brEle.Text.Split('\n')[1].Split(' ')[1];
-                var brVal = double.Parse(brText);
+                var brVal = double.Parse(brText, Program.GlobalCulture);
                 var rev24hEle = Driver.FindElement(By.XPath(Program.Config.Rev24hXPath));
                 var rev24hText = rev24hEle.Text.Split('\n')[0];
-                var rev24hVal = double.Parse(rev24hText);
+                var rev24hVal = double.Parse(rev24hText, Program.GlobalCulture);
                 var result = rev24hVal / brVal * 2000;
                 WTM = result;
-                onCalculated(result.ToString("0.000000"));
+                onCalculated(result.ToString("N6", Program.GlobalCulture));
             }
             catch (WebDriverTimeoutException)
             {

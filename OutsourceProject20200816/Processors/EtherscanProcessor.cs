@@ -87,7 +87,7 @@ namespace OutsourceProject20200816.Processors
                         if (!IsToday)
                         {
                             var lastBlocks = blocks.Last();
-                            var id = long.Parse(lastBlocks.FindElement(By.XPath("td[1]")).Text);
+                            var id = long.Parse(lastBlocks.FindElement(By.XPath("td[1]")).Text, Program.GlobalCulture);
                             var dateStr = lastBlocks.FindElement(By.XPath("td[2]")).GetAttribute("textContent");
                             var utcDate = DateTime.ParseExact(dateStr, "yyyy-MM-dd H:m:s",
                                 CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
@@ -97,7 +97,7 @@ namespace OutsourceProject20200816.Processors
                         if (cont)
                             foreach (var b in blocks)
                             {
-                                var id = long.Parse(b.FindElement(By.XPath("td[1]")).Text);
+                                var id = long.Parse(b.FindElement(By.XPath("td[1]")).Text, Program.GlobalCulture);
                                 var dateStr = b.FindElement(By.XPath("td[2]")).GetAttribute("textContent");
                                 var utcDate = DateTime.ParseExact(dateStr, "yyyy-MM-dd H:m:s",
                                     CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
@@ -125,7 +125,7 @@ namespace OutsourceProject20200816.Processors
                                 }
                                 BlockIds.Add(id);
                                 var rewardText = b.FindElement(By.XPath("td[10]")).Text.Split(' ')[0];
-                                var reward = double.Parse(rewardText);
+                                var reward = double.Parse(rewardText, Program.GlobalCulture);
                                 CountBlocks++;
                                 SumReward += reward;
                                 MeanReward = SumReward / CountBlocks;
@@ -177,13 +177,13 @@ namespace OutsourceProject20200816.Processors
         {
             return
                 $"Đầu: {BlockIds.LastOrDefault()} - Cuối: {BlockIds.FirstOrDefault()}\n" +
-                $"Tổng reward: {SumReward:N5}\n" +
-                $"Trung bình reward: {MeanReward:N5}\n" +
-                $"Tổng số block: {CountBlocks:N0}\n" +
+                $"Tổng reward: {SumReward.ToString("N5", Program.GlobalCulture)}\n" +
+                $"Trung bình reward: {MeanReward.ToString("N5", Program.GlobalCulture)}\n" +
+                $"Tổng số block: {CountBlocks.ToString("N0", Program.GlobalCulture)}\n" +
                 $"Dữ liệu cho ngày: {ParsingDate:dd/MM/yyyy}\n" +
                 $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}\n" +
                 $"---------------------------\n" +
-                $"Giá max: {GetCurrentMaxPrice(MeanReward):N5}\n";
+                $"Giá max: {GetCurrentMaxPrice(MeanReward).ToString("N5", Program.GlobalCulture)}\n";
         }
 
     }

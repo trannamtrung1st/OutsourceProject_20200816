@@ -74,7 +74,7 @@ namespace OutsourceProject20200816.Processors
                         });
                         foreach (var b in blocks)
                         {
-                            var id = long.Parse(b.FindElement(By.XPath("td[1]")).Text);
+                            var id = long.Parse(b.FindElement(By.XPath("td[1]")).Text, Program.GlobalCulture);
                             if (Blocks.ContainsKey(id))
                             {
                                 if (!isLastParsed) continue;
@@ -82,7 +82,7 @@ namespace OutsourceProject20200816.Processors
                                 break;
                             }
                             var rewardText = b.FindElement(By.XPath("td[10]")).Text.Split(' ')[0];
-                            var reward = double.Parse(rewardText);
+                            var reward = double.Parse(rewardText, Program.GlobalCulture);
                             Blocks.Add(id, reward);
                         }
                         CurrentPage++;
@@ -139,12 +139,12 @@ namespace OutsourceProject20200816.Processors
                 maxPrice = GetCurrentMaxPrice(mean);
                 resStr =
                     $"Đầu: {subset.FirstOrDefault().Key} - Cuối: {subset.LastOrDefault().Key}\n" +
-                    $"Tổng reward: {sum:N5}\n" +
-                    $"Trung bình reward: {mean:N5}\n" +
-                    $"Số block gần nhất: {subset.Count():N0}\n" +
+                    $"Tổng reward: {sum.ToString("N5", Program.GlobalCulture)}\n" +
+                    $"Trung bình reward: {mean.ToString("N5", Program.GlobalCulture)}\n" +
+                    $"Số block gần nhất: {subset.Count().ToString("N0", Program.GlobalCulture)}\n" +
                     $"Cập nhật vào: {DateTime.Now:dd/MM/yyyy HH:mm:ss}\n" +
                     $"---------------------------\n" +
-                    $"Giá max: {maxPrice:N5}\n";
+                    $"Giá max: {maxPrice.ToString("N5", Program.GlobalCulture)}\n";
             }
             return (resStr, maxPrice);
         }
