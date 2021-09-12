@@ -21,13 +21,20 @@ namespace OutsourceProject20200816
         [STAThread]
         static void Main()
         {
-            //Prepare
-            var jsonConfig = File.ReadAllText("config.json");
-            Config = JsonConvert.DeserializeObject<Config>(jsonConfig);
+            try
+            {
+                //Prepare
+                var jsonConfig = File.ReadAllText("config.json");
+                Config = JsonConvert.DeserializeObject<Config>(jsonConfig);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new App());
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new App());
+            }
+            catch (Exception e)
+            {
+                File.WriteAllText("error.txt", e.ToString());
+            }
         }
     }
 }
